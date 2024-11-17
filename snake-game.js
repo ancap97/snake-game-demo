@@ -1,8 +1,8 @@
 const config = {
   type: Phaser.AUTO,
-  width: 600, // Increased width
-  height: 600, // Increased height
-  backgroundColor: '#000000',
+  width: 600, // Play area width
+  height: 600, // Play area height
+  backgroundColor: '#2d2d2d', // Play area background color (dark gray)
   scene: {
     preload: preload,
     create: create,
@@ -23,20 +23,22 @@ let score = 0;
 
 function preload() {
   // Load food asset
-  this.load.image('food', 'https://cdn-icons-png.flaticon.com/512/3523/3523063.png'); // Replace with your own image URL
+  this.load.image('food', 'https://cdn-icons-png.flaticon.com/512/3523/3523063.png'); // Food image (red)
 }
 
 function create() {
-  // Add the initial snake body parts
+  // Add the initial snake body parts with green color
   for (let i = 0; i < 3; i++) {
-    snake.push(this.add.rectangle(200 - i * gridSize, 200, gridSize, gridSize, 0x00ff00));
+    snake.push(
+      this.add.rectangle(200 - i * gridSize, 200, gridSize, gridSize, 0x00ff00) // Green snake
+    );
   }
 
-  // Add food
+  // Add food with a red color
   food = this.add.rectangle(getRandomPosition(), getRandomPosition(), gridSize, gridSize, 0xff0000);
 
-  // Draw border
-  const borderColor = 0xffffff; // White border color
+  // Draw border with a bright color (yellow)
+  const borderColor = 0xffff00; // Yellow border color
   this.add.rectangle(config.width / 2, 0, config.width, gridSize, borderColor).setOrigin(0.5, 0); // Top border
   this.add.rectangle(config.width / 2, config.height, config.width, gridSize, borderColor).setOrigin(0.5, 1); // Bottom border
   this.add.rectangle(0, config.height / 2, gridSize, config.height, borderColor).setOrigin(0, 0.5); // Left border
@@ -46,7 +48,7 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   // Display score
-  this.scoreText = this.add.text(10, 10, `Score: ${score}`, { fontSize: '16px', color: '#fff' });
+  this.scoreText = this.add.text(10, 10, `Score: ${score}`, { fontSize: '16px', color: '#ffffff' }); // White score text
 }
 
 function update(time) {
