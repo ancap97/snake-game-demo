@@ -1,7 +1,7 @@
 const config = {
   type: Phaser.AUTO,
-  width: 400,
-  height: 400,
+  width: 600, // Increased width
+  height: 600, // Increased height
   backgroundColor: '#000000',
   scene: {
     preload: preload,
@@ -34,6 +34,13 @@ function create() {
 
   // Add food
   food = this.add.rectangle(getRandomPosition(), getRandomPosition(), gridSize, gridSize, 0xff0000);
+
+  // Draw border
+  const borderColor = 0xffffff; // White border color
+  this.add.rectangle(config.width / 2, 0, config.width, gridSize, borderColor).setOrigin(0.5, 0); // Top border
+  this.add.rectangle(config.width / 2, config.height, config.width, gridSize, borderColor).setOrigin(0.5, 1); // Bottom border
+  this.add.rectangle(0, config.height / 2, gridSize, config.height, borderColor).setOrigin(0, 0.5); // Left border
+  this.add.rectangle(config.width, config.height / 2, gridSize, config.height, borderColor).setOrigin(1, 0.5); // Right border
 
   // Initialize cursors for keyboard input
   cursors = this.input.keyboard.createCursorKeys();
@@ -86,10 +93,10 @@ function moveSnake() {
 
   // Check for collisions with walls or itself
   if (
-    newHeadX < 0 ||
-    newHeadY < 0 ||
-    newHeadX >= config.width ||
-    newHeadY >= config.height ||
+    newHeadX < gridSize || // Left border
+    newHeadY < gridSize || // Top border
+    newHeadX >= config.width - gridSize || // Right border
+    newHeadY >= config.height - gridSize || // Bottom border
     checkSelfCollision(newHeadX, newHeadY)
   ) {
     resetGame();
@@ -106,7 +113,8 @@ function checkSelfCollision(x, y) {
 }
 
 function getRandomPosition() {
-  return Math.floor(Math.random() * (config.width / gridSize)) * gridSize;
+  // Generate a random position that aligns with the grid and is within the border
+  return Math.floor(Math.random() * ((config.width - gridSize) / gridSize)) * gridSize + gridSize;
 }
 
 function repositionFood() {
